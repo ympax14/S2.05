@@ -8,11 +8,9 @@ int main(int argc, char *argv[]) {
     LoginDialog login;
 
     if (login.exec() == QDialog::Accepted && login.success) {
-        EnerSenseWindow w;
+        EnerSenseWindow w(nullptr, &a);
         w.show();
 
         return QCoreApplication::exec();
-    } else {
-        return EXIT_SUCCESS;
-    }
+    } else return EXIT_SUCCESS;
 }

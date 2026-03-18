@@ -15,6 +15,7 @@ class LoginDialog : public QDialog {
     Q_OBJECT
 
 private:
+    static const int WINDOW_WIDTH = 400, WINDOW_HEIGHT = 250;
     // Layout principal
     QVBoxLayout *mainLayout;
     QLabel *titleLabel;

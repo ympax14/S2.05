@@ -6,11 +6,11 @@ LoginDialog::LoginDialog() :
     formLayout(new QFormLayout()), emailInput(new QLineEdit(this)), passwordInput(new QLineEdit(this)),
     errorLabel(new QLabel("", this)),
     buttonLayout(new QHBoxLayout()), loginBtn(new QPushButton("Se connecter", this)),
-    success(false) {
-
+    success(false)
+{
     // Fenêtre
     this->setWindowTitle("EnerSense | Connexion");
-    this->setFixedSize(400, 250); // Taille fixe
+    this->setFixedSize(LoginDialog::WINDOW_WIDTH, LoginDialog::WINDOW_HEIGHT); // Taille fixe
 
     // Layout principal vertical
     this->mainLayout->setContentsMargins(20, 20, 20, 20); // marges
