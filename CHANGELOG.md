@@ -7,7 +7,7 @@ Toutes les modifications sont documentées selon [Semantic Versioning](https://s
 - Page de Connexion (LoginDialog) avec email/identifiant et mot de passe
 - Validation simple des champs
 
-## [0.1.0-dev] - 2026-03-17
+## [0.2.0-dev] - 2026-03-17
 ### Added
 - Options "Quitter" et "Nouvelle Facture" dans la QMenuBar
 - Icons/Images dans le fichier ressources.qrc
