@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/menubar/open_bill.png</file>
+        <file>assets/menubar/new_bill.png</file>
+        <file>assets/menubar/quit.png</file>
+    </qresource>
+</RCC>
