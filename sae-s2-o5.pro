@@ -9,11 +9,13 @@ CONFIG += c++17
 SOURCES += \
     src/EnerSense/EnerSenseWindow.cpp \
     src/Login/LoginDialog.cpp \
-    src/main.cpp
+    src/main.cpp \
+    src/utils/StylesHelper.cpp
 
 HEADERS += \
     src/EnerSense/EnerSenseWindow.hpp \
-    src/Login/LoginDialog.hpp
+    src/Login/LoginDialog.hpp \
+    src/utils/StylesHelper.hpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -22,3 +24,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     ressources.qrc
+
+DISTFILES += \
+    assets/styles/enersense.qss \
+    style.qss

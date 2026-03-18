@@ -2,6 +2,12 @@
 
 Toutes les modifications sont documentées selon [Semantic Versioning](https://semver.org/).
 
+## [0.2.1-dev] - 2026-03-19
+### Added
+- Fichier styles .qss chargeable par **QWidget** avec le **StylesHelper** 
+### Modify
+- Réécriture de parties de codes
+
 ## [0.2.0-dev] - 2026-03-18
 ### Added
 - Options "Quitter" et "Nouvelle Facture" dans la QMenuBar
