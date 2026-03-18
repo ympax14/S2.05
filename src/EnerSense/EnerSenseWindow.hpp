@@ -24,10 +24,20 @@ private:
     QWidget *estimatePage;
 
     QWidget *offersComparatorPage;
+
+    void setupWindow();
+    void setupMenuBar();
+    void setupTabs();
+
+    void setupBillsPage();
+    void setupEstimatePage();
+    void setupComparatorPage();
+
+    void connectButtons(QApplication* const &app);
 public:
     static const int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 720;
 
-    explicit EnerSenseWindow(QWidget *parent = nullptr, QApplication *app = nullptr);
+    explicit EnerSenseWindow(QWidget* const &parent = nullptr, QApplication* const &app = nullptr);
 
 signals:
 };
