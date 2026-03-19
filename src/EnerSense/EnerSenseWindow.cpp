@@ -1,6 +1,8 @@
 #include "EnerSenseWindow.hpp"
 #include "../utils/StylesHelper.hpp"
 
+std::list<Invoice*> EnerSenseWindow::invoices;
+
 EnerSenseWindow::EnerSenseWindow(QWidget* const &parent, QApplication* const &app) :
     QMainWindow{parent},
 
@@ -9,18 +11,17 @@ EnerSenseWindow::EnerSenseWindow(QWidget* const &parent, QApplication* const &ap
     addBillAction(new QAction(QIcon(":/assets/menubar/open_bill.png"), tr("&Ajouter une facture..."), this)),
     quitAction(new QAction(QIcon(":/assets/menubar/quit.png"), tr("&Quitter"), this)),
 
-    tabWidget(new QTabWidget(this)),
+    tabWidget(new StretchTabWidget(this)),
 
-    billsPage(new QWidget(this->tabWidget)),
-    billsPageLayout(new QVBoxLayout(this->billsPage)),
-    billsArea(new QMdiArea(this->billsPage)),
+    billsPage(new BillsPage(this->tabWidget)),
 
-    estimatePage(new QWidget(this->tabWidget)),
+    estimatePage(new EstimatePage(this->tabWidget)),
 
-    offersComparatorPage(new QWidget(this->tabWidget))
+    offersComparatorPage(new OffersComparatorPage(this->tabWidget))
 {
-    this->setupWindow();
     StylesHelper::loadStyle(this, ":/assets/styles/enersense.qss");
+
+    this->setupWindow();
 
     this->setupMenuBar();
     this->setupTabs();
@@ -28,12 +29,17 @@ EnerSenseWindow::EnerSenseWindow(QWidget* const &parent, QApplication* const &ap
     this->connectButtons(app);
 }
 
+EnerSenseWindow::~EnerSenseWindow() {
+    for (Invoice* invoice : this->getInvoices())
+        delete invoice;
+}
+
 void EnerSenseWindow::setupWindow() {
     // Titre de la Fenêtre Principale.
     this->setWindowTitle("EnerSense | Votre Application de Suivi Énergétique");
 
-    // Modification de la taille de la Fenêtre Principale et taille fixe.
-    this->setFixedSize(EnerSenseWindow::WINDOW_WIDTH, EnerSenseWindow::WINDOW_HEIGHT);
+    // Modification de la taille de la Fenêtre Principale et taille minimum fixe.
+    this->setMinimumSize(EnerSenseWindow::WINDOW_WIDTH, EnerSenseWindow::WINDOW_HEIGHT);
 }
 
 void EnerSenseWindow::setupMenuBar() {
@@ -68,10 +74,6 @@ void EnerSenseWindow::setupTabs() {
 }
 
 void EnerSenseWindow::setupBillsPage() {
-    this->billsPageLayout->addWidget(this->billsArea);
-
-    this->billsPage->setLayout(this->billsPageLayout);
-
     this->tabWidget->addTab(this->billsPage, "Factures");
 }
 
@@ -84,5 +86,10 @@ void EnerSenseWindow::setupComparatorPage() {
 }
 
 void EnerSenseWindow::connectButtons(QApplication* const &app) {
+    QObject::connect(this->newBillAction, &QAction::triggered, this, [this]() {
+        this->tabWidget->setCurrentWidget(this->billsPage);
+        this->billsPage->newBill();
+    });
+
     QObject::connect(this->quitAction, &QAction::triggered, app, &QApplication::quit);
 }
