@@ -2,6 +2,10 @@
 
 Toutes les modifications sont documentées selon [Semantic Versioning](https://semver.org/).
 
+## [0.3.0-dev] - 2026-03-19
+### Added
+- Système de création de factures avec champs dynamiques
+
 ## [0.2.1-dev] - 2026-03-19
 ### Added
 - Fichier styles .qss chargeable par **QWidget** avec le **StylesHelper** 
