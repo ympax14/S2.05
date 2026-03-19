@@ -20,9 +20,10 @@ LoginDialog::LoginDialog() :
 
     success(false)
 {
+    StylesHelper::loadStyle(this, ":/assets/styles/login.qss");
+
     // Fenêtre
     this->setupWindow();
-    StylesHelper::loadStyle(this, ":/assets/styles/login.qss");
 
     // Layout principal
     this->setupMainLayout();
@@ -77,6 +78,7 @@ void LoginDialog::setupFormLayout() {
 void LoginDialog::setupErrors() {
     this->errorTimer->setSingleShot(true);
 
+    // Nettoyer et cacher le QLabel relatif aux erreurs
     QObject::connect(errorTimer, &QTimer::timeout, this, [this]() {
         errorLabel->hide();
         errorLabel->clear();
