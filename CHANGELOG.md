@@ -2,7 +2,7 @@
 
 Toutes les modifications sont documentées selon [Semantic Versioning](https://semver.org/).
 
-## [0.3.0-dev] - 2026-03-19
+## [0.3.0-dev] - 2026-03-20
 ### Added
 - Système de création de factures avec champs dynamiques
 
