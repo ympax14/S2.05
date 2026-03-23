@@ -8,18 +8,18 @@ InvoiceFormField::InvoiceFormField(InvoiceField* const &field) :
     price(new QDoubleSpinBox(this)),
     constant(field->isFixed() ? nullptr : new QDoubleSpinBox(this))
 {
+    this->price->setMinimum(0.0);
+    this->price->setMaximum(999999.99);
+    this->price->setValue(field->getPrice());
+
     if (field->isFixed()) {
-        this->price->setMinimum(0.0);
-        this->price->setValue(field->getPrice());
         this->form->addRow("Prix (€)", this->price);
     } else {
         this->quantity->setMinimum(1);
         this->quantity->setMaximum(999999);
         this->quantity->setValue(field->getQuantity());
-        form->addRow("Quantité ou Prix (€)", this->quantity);
 
-        this->price->setMinimum(0.0);
-        this->price->setValue(field->getPrice());
+        this->form->addRow("Quantité ou Prix (€)", this->quantity);
         this->form->addRow("Prix unitaire (€) ou Coefficient", this->price);
 
         this->constant->setMinimum(0.0);

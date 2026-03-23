@@ -65,7 +65,6 @@ InvoiceForm::InvoiceForm(Invoice* const &_invoice, QWidget* const &parent) :
         this->formLayout->addRow(group);
     }
 
-    this->addFieldBtn->resize(200, 50);
     this->formLayout->addWidget(this->addFieldBtn);
 
     this->mainLayout->addWidget(scrollArea);
