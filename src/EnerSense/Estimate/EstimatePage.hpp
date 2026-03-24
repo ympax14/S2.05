@@ -1,15 +1,24 @@
-#ifndef ESTIMATEPAGE_H
-#define ESTIMATEPAGE_H
+#ifndef BILLSPAGE_H
+#define BILLSPAGE_H
 
 #include <QWidget>
+#include <QVBoxLayout>
+#include <QMdiArea>
+#include <QMdiSubWindow>
 
 class EstimatePage : public QWidget
 {
     Q_OBJECT
+
+private:
+    QVBoxLayout *layout;
+    QMdiArea *mdiArea;
 public:
     explicit EstimatePage(QWidget* const &parent = nullptr);
 
+public slots:
+    void newBill();
 signals:
 };
 
-#endif // ESTIMATEPAGE_H
+#endif // BILLSPAGE_H
