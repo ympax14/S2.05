@@ -1,13 +1,11 @@
-#ifndef ENERSENSEWINDOW_H
-#define ENERSENSEWINDOW_H
+#ifndef ENERSENSECLIENTWINDOW_H
+#define ENERSENSECLIENTWINDOW_H
 
-#include "StretchTabWidget.hpp"
-
+#include "../StretchTabWidget.hpp"
 #include "./MyContract/MyContractPage.hpp"
 #include "./Estimate/EstimatePage.hpp"
 #include "./OffersComparator/OffersComparatorPage.hpp"
-
-#include "./Models/Invoice.hpp"
+#include "../Models/Invoice.hpp"
 
 #include <list>
 #include <QMainWindow>
@@ -19,13 +17,13 @@
 #include <QApplication>
 #include <QTabBar>
 
-class EnerSenseWindow : public QMainWindow {
+class EnerSenseClientWindow : public QMainWindow {
     Q_OBJECT
 private:
     static std::list<Invoice*> invoices;
 
-    QMenu *fileMenu;
-    QAction *newBillAction, *addBillAction, *quitAction;
+    QMenu * const fileMenu;
+    QAction * const newEstimationAction, * const quitAction;
 
     StretchTabWidget * const tabWidget;
 
@@ -45,10 +43,10 @@ private:
 public:
     static const int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 720;
 
-    explicit EnerSenseWindow(QWidget* const &parent = nullptr, QApplication* const &app = nullptr);
-    ~EnerSenseWindow();
+    explicit EnerSenseClientWindow(QWidget* const &parent = nullptr, QApplication* const &app = nullptr);
+    ~EnerSenseClientWindow();
 
     inline static std::list<Invoice*>& getInvoices() { return invoices; };
 };
 
-#endif // ENERSENSEWINDOW_H
+#endif // ENERSENSECLIENTWINDOW_H

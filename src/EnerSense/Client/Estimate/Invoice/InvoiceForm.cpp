@@ -1,6 +1,6 @@
 #include "InvoiceForm.hpp"
 
-#include "../../../utils/DataManager.hpp"
+#include "../../../../utils/DataManager.hpp"
 
 #include <QFont>
 #include <QFrame>
@@ -41,7 +41,7 @@ InvoiceForm::InvoiceForm(Invoice* const &_invoice, QWidget* const &parent) :
     consumptionLabel(new QLabel("Consommation : 0 kWh", this->documentContainer)),
     totalLabel(new QLabel("Total : 0.00 €", this->documentContainer))
 {
-    this->setWindowTitle("Facture de " + this->invoice->clientName);
+    this->setWindowTitle(QString("Facture de %1 (%2)").arg(this->invoice->clientName).arg(this->invoice->billingDate.toString("dd/MM/yyyy")));
     this->setupUI();
     this->connectSignals();
 
@@ -164,13 +164,14 @@ void InvoiceForm::connectSignals() {
 
 void InvoiceForm::updateTariffsFromDate() {
     this->invoice->billingDate = this->billingDateEdit->date();
+    this->setWindowTitle(QString("Facture de %1 (%2)").arg(this->invoice->clientName).arg(this->invoice->billingDate.toString("dd/MM/yyyy")));
 
     // On récupère l'utilisateur connecté depuis notre Singleton
     User* currentUser = DataManager::getInstance().getCurrentUser();
 
     if (currentUser && currentUser->contract) {
         // On récupère le tarif exact à la date sélectionnée
-        ContractTariff tariff = currentUser->contract->getTariffAt(this->invoice->billingDate);
+        ContractTariff tariff = currentUser->contract->linkedOffer->getTariffAt(this->invoice->billingDate);
 
         this->invoice->subscriptionPriceApplied = tariff.subscriptionPrice;
         this->invoice->kwhPriceApplied = tariff.kwhPrice;

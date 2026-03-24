@@ -19,10 +19,6 @@ public:
     explicit MyContractPage(QWidget* const &parent = nullptr);
     void loadContractData();
 
-private slots:
-    void addNewTariff();
-    void removeTariff(const QDate& date);
-
 private:
     QVBoxLayout* mainLayout;
 
@@ -30,6 +26,7 @@ private:
     QGroupBox* infoGroup;
     QFormLayout* infoLayout;
     QLabel* providerLabel;
+    QLabel* offerLabel;
     QLabel* energyTypeLabel;
 
     // Historique des tarifs
@@ -37,16 +34,7 @@ private:
     QVBoxLayout* historyLayout;
     QTableWidget* tariffTable;
 
-    // Mises à jour (Nouveaux tarifs)
-    QGroupBox* updateGroup;
-    QFormLayout* updateLayout;
-    QDateEdit* newDateEdit;
-    QDoubleSpinBox* newSubPriceBox;
-    QDoubleSpinBox* newKwhPriceBox;
-    QPushButton* addTariffBtn;
-
     void setupUI();
-    void connectSignals();
     void refreshTable();
 };
 
