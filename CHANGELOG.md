@@ -2,6 +2,15 @@
 
 Toutes les modifications sont documentées selon [Semantic Versioning](https://semver.org/).
 
+## [1.0.0-dev] - 2026-03-24
+### Modified
+- Refonte du système de factures
+- Refonte de l'interface
+### Added
+- Comptes utilisateurs
+- Contrats
+- Serialization des données (comptes utilisateurs) au format JSON
+
 ## [0.3.0-dev] - 2026-03-20
 ### Added
 - Système de création de factures avec champs dynamiques
