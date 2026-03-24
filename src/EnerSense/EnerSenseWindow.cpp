@@ -13,10 +13,8 @@ EnerSenseWindow::EnerSenseWindow(QWidget* const &parent, QApplication* const &ap
 
     tabWidget(new StretchTabWidget(this)),
 
-    billsPage(new BillsPage(this->tabWidget)),
-
+    myContractPage(new MyContractPage(this->tabWidget)),
     estimatePage(new EstimatePage(this->tabWidget)),
-
     offersComparatorPage(new OffersComparatorPage(this->tabWidget))
 {
     StylesHelper::loadStyle(this, ":/assets/styles/enersense.qss");
@@ -60,8 +58,8 @@ void EnerSenseWindow::setupMenuBar() {
 }
 
 void EnerSenseWindow::setupTabs() {
-    // Page "Factures"
-    this->setupBillsPage();
+    // Page "Mon Contrat"
+    this->setupMyContractPage();
 
     // Page "Estimations"
     this->setupEstimatePage();
@@ -73,8 +71,8 @@ void EnerSenseWindow::setupTabs() {
     this->setCentralWidget(this->tabWidget);
 }
 
-void EnerSenseWindow::setupBillsPage() {
-    this->tabWidget->addTab(this->billsPage, "Factures");
+void EnerSenseWindow::setupMyContractPage() {
+    this->tabWidget->addTab(this->myContractPage, "Mon Contrat");
 }
 
 void EnerSenseWindow::setupEstimatePage() {
@@ -87,8 +85,8 @@ void EnerSenseWindow::setupComparatorPage() {
 
 void EnerSenseWindow::connectButtons(QApplication* const &app) {
     QObject::connect(this->newBillAction, &QAction::triggered, this, [this]() {
-        this->tabWidget->setCurrentWidget(this->billsPage);
-        this->billsPage->newBill();
+        this->tabWidget->setCurrentWidget(this->estimatePage);
+        this->estimatePage->newBill();
     });
 
     QObject::connect(this->quitAction, &QAction::triggered, app, &QApplication::quit);

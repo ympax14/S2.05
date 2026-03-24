@@ -3,11 +3,11 @@
 
 #include "StretchTabWidget.hpp"
 
-#include "./Bills/BillsPage.hpp"
+#include "./MyContract/MyContractPage.hpp"
 #include "./Estimate/EstimatePage.hpp"
 #include "./OffersComparator/OffersComparatorPage.hpp"
 
-#include "./Bills/Invoice/Invoice.hpp"
+#include "./Models/Invoice.hpp"
 
 #include <list>
 #include <QMainWindow>
@@ -27,19 +27,17 @@ private:
     QMenu *fileMenu;
     QAction *newBillAction, *addBillAction, *quitAction;
 
-    StretchTabWidget *tabWidget;
+    StretchTabWidget * const tabWidget;
 
-    BillsPage *billsPage;
-
-    EstimatePage *estimatePage;
-
-    OffersComparatorPage *offersComparatorPage;
+    MyContractPage * const myContractPage;
+    EstimatePage * const estimatePage;
+    OffersComparatorPage * const offersComparatorPage;
 
     void setupWindow();
     void setupMenuBar();
     void setupTabs();
 
-    void setupBillsPage();
+    void setupMyContractPage();
     void setupEstimatePage();
     void setupComparatorPage();
 

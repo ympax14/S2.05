@@ -1,5 +1,7 @@
 #include "LoginDialog.hpp"
+
 #include "../utils/StylesHelper.hpp"
+#include "../utils/DataManager.hpp"
 
 LoginDialog::LoginDialog() :
     QDialog(nullptr),
@@ -121,17 +123,13 @@ void LoginDialog::tryLogin() {
     QString emailText = emailInput->text();
     QString passwordText = passwordInput->text();
 
-    /*
-     *  Exemple de validation "simple", normalement il faudrait envoyer une requête
-     *  à une API (REST par exemple) pour valider les informations et ensuite obtenir une session valide
-     */
-
     if(emailText.isEmpty() || passwordText.isEmpty()) {
         this->showError("Veuillez remplir tous les champs !");
         return;
     }
 
-    if(emailText == "user@example.com" && passwordText == "1234") {
+    // Utilisation du DataManager pour vérifier les identifiants
+    if(DataManager::getInstance().authenticate(emailText, passwordText)) {
         success = true;
         accept(); // Ferme le QDialog
     } else {
