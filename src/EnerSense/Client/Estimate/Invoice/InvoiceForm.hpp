@@ -1,7 +1,7 @@
 #ifndef INVOICEFORM_HPP
 #define INVOICEFORM_HPP
 
-#include "../../Models/Invoice.hpp"
+#include "../../../Models/Invoice.hpp"
 
 #include <QWidget>
 #include <QHBoxLayout>
@@ -27,7 +27,7 @@ private slots:
     void updateTariffsFromDate();
 
 private:
-    Invoice* const invoice;
+    Invoice * const invoice;
 
     // --- Conteneur global (la zone de défilement) ---
     QVBoxLayout * const mainLayout;

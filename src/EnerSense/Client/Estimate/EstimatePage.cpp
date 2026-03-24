@@ -1,8 +1,8 @@
 #include "EstimatePage.hpp"
 
 #include "Invoice/InvoiceForm.hpp"
-#include "../EnerSenseWindow.hpp"
-#include "../../utils/DataManager.hpp"
+#include "../EnerSenseClientWindow.hpp"
+#include "../../../utils/DataManager.hpp"
 
 EstimatePage::EstimatePage(QWidget* const &parent) :
     QWidget{parent},
@@ -27,7 +27,7 @@ void EstimatePage::newBill() {
     // On crée la facture
     Invoice* invoice = new Invoice(clientName);
 
-    EnerSenseWindow::getInvoices().push_back(invoice);
+    EnerSenseClientWindow::getInvoices().push_back(invoice);
 
     QMdiSubWindow *subWindow = this->mdiArea->addSubWindow(new InvoiceForm(invoice, this->mdiArea));
     this->mdiArea->setActiveSubWindow(subWindow);

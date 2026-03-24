@@ -19,7 +19,6 @@ public:
 
     Invoice(const QString& _clientName) : clientName(_clientName), billingDate(QDate::currentDate()), initialIndex(0), currentIndex(0), subscriptionPriceApplied(0.0), kwhPriceApplied(0.0) {}
 
-    // Calculs de base
     inline int getConsumption() const {
         return (currentIndex >= initialIndex) ? (currentIndex - initialIndex) : 0;
     }
