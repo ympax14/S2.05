@@ -2,14 +2,17 @@
 #define DATAMANAGER_HPP
 
 #include "../EnerSense/Models/User.hpp"
+#include "../EnerSense/Models/Offer.hpp"
+
 #include <vector>
 #include <QString>
 
 class DataManager {
 private:
     std::vector<User*> users;
+    std::vector<EnergyOffer*> offers;
     User* currentUser;
-    const QString filePath = "users_data.json";
+    const QString filePath = "enersense_data.json";
 
     // Constructeur privé "Singleton"
     DataManager();
@@ -31,11 +34,13 @@ public:
 
     bool authenticate(const QString& id, const QString& password);
 
-    inline User* getCurrentUser() const {
-        return currentUser;
-    }
+    EnergyOffer* getOfferByName(const QString& provider, const QString& name);
 
-    // Pour créer un compte si besoin plus tard
+    inline User* getCurrentUser() const { return currentUser; };
+    inline std::vector<User*>& getUsers() { return users; };
+    inline std::vector<EnergyOffer*>& getOffers() { return offers; };
+
+    void addOffer(EnergyOffer* offer);
     void addUser(User* user);
 };
 
