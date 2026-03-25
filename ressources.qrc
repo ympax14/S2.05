@@ -3,7 +3,6 @@
         <file>assets/menubar/new_bill.png</file>
         <file>assets/menubar/quit.png</file>
         <file>assets/styles/login.qss</file>
-        <file>assets/styles/enersenseclient.qss</file>
-	<file>assets/styles/enersenseadmin.qss</file>
+        <file>assets/styles/enersense.qss</file>
     </qresource>
 </RCC>

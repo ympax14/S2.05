@@ -20,19 +20,17 @@ public:
     void loadContractData();
 
 private:
-    QVBoxLayout* mainLayout;
+    QVBoxLayout * const mainLayout;
 
     // Informations du contrat
-    QGroupBox* infoGroup;
-    QFormLayout* infoLayout;
-    QLabel* providerLabel;
-    QLabel* offerLabel;
-    QLabel* energyTypeLabel;
+    QGroupBox * const infoGroup;
+    QFormLayout * const infoLayout;
+    QLabel * const providerLabel, * const offerLabel, * const energyTypeLabel;
 
     // Historique des tarifs
-    QGroupBox* historyGroup;
-    QVBoxLayout* historyLayout;
-    QTableWidget* tariffTable;
+    QGroupBox * const historyGroup;
+    QVBoxLayout * const historyLayout;
+    QTableWidget * const tariffTable;
 
     void setupUI();
     void refreshTable();

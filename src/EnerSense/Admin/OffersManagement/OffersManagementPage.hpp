@@ -19,11 +19,11 @@ private slots:
     void deleteOffer();
 
 private:
-    QVBoxLayout* mainLayout;
-    QTableWidget* offersTable;
+    QVBoxLayout * const mainLayout;
+    QTableWidget* const offersTable;
 
-    QHBoxLayout * btnLayout;
-    QPushButton * btnCreate, * btnEdit, * btnManageTariffs, * btnDelete;
+    QHBoxLayout * const btnLayout;
+    QPushButton * const btnCreate, * const btnEdit, * const btnManageTariffs, * const btnDelete;
 
     void setupUI();
 

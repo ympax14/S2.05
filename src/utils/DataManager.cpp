@@ -1,4 +1,5 @@
 #include "DataManager.hpp"
+
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -9,58 +10,97 @@ DataManager::DataManager() : currentUser(nullptr) {
 }
 
 DataManager::~DataManager() {
-    for (User* u : this->users)
-        delete u;
+    for (User* u : this->users) delete u;
 }
 
 void DataManager::loadData() {
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << "Création d'un utilisateur par défaut.";
+        qDebug() << "Création de la base de données exhaustive par défaut.";
 
-        // Compte administrateur par défaut
         User* adminUser = new User("admin", "admin", "Administrateur Système", true, nullptr);
         this->users.push_back(adminUser);
 
-        // Offres par défaut
-        // EDF - Électricité (Tarif Réglementé de Base)
-        // Stratégie : Le standard du marché. Abonnement moyen, prix moyen.
-        EnergyOffer* edfElec = new EnergyOffer("EDF", "Tarif Bleu", "Électricité");
-        edfElec->addTariffVersion(QDate(2023, 2, 1), 14.30, 0.2062);
-        edfElec->addTariffVersion(QDate(2024, 2, 1), 15.12, 0.2516);
+        // Helper pour générer facilement les paliers kVA
+        auto addTiers = [](ContractTariff& t, double baseAbo, double multAbo, double baseKwh, double hpKwh, double hcKwh) {
+            const std::vector<int> kvas = {3, 6, 9, 12, 15, 18, 36};
+            for (int k : kvas) {
+                double sub = baseAbo + (multAbo * (k - 3) / 3); // L'abo monte avec la puissance
+                t.powerTiers[k] = {sub, baseKwh, hpKwh, hcKwh};
+            }
+        };
+
+        // ==========================================
+        // OFFRES ÉLECTRICITÉ
+        // ==========================================
+
+        // 1. EDF - Tarif Bleu (Tarif Réglementé)
+        EnergyOffer* edfElec = new EnergyOffer("EDF", "Tarif Bleu (TRV)", "Électricité");
+        ContractTariff edfTariff;
+        edfTariff.taxes.cta = 1.63;
+        edfTariff.taxes.accise = 0.021;
+        // Abo commence à ~9.60 pour 3kVA, monte de ~3€ tous les 3kVA
+        addTiers(edfTariff, 9.60, 3.10, 0.2060, 0.2260, 0.1710);
+        edfElec->addTariffVersion(QDate(2024, 2, 1), edfTariff);
         this->offers.push_back(edfElec);
 
-        // EDF - Gaz (Avantage Gaz)
-        // Note : Le prix du gaz est toujours plus bas que l'électricité, mais l'abonnement est plus cher.
-        EnergyOffer* edfGaz = new EnergyOffer("EDF", "Avantage Gaz", "Gaz");
-        edfGaz->addTariffVersion(QDate(2023, 1, 1), 20.50, 0.1120);
-        edfGaz->addTariffVersion(QDate(2024, 7, 1), 21.10, 0.0980); // Le gaz a un peu baissé récemment
-        this->offers.push_back(edfGaz);
-
-        // TotalEnergies - Électricité (Offre Verte Fixe)
-        // Stratégie : Abonnement CHER, mais kWh MOINS CHER.
-        // -> Gagne le comparateur si le client simule une grosse consommation (ex: > 8000 kWh).
-        EnergyOffer* totalElec = new EnergyOffer("TotalEnergies", "Offre Verte Fixe", "Électricité");
-        totalElec->addTariffVersion(QDate(2023, 3, 1), 16.00, 0.1950);
-        totalElec->addTariffVersion(QDate(2024, 3, 1), 17.50, 0.2310);
+        // 2. TotalEnergies - Heures Eco (Compétitif sur le Base)
+        EnergyOffer* totalElec = new EnergyOffer("TotalEnergies", "Heures Eco Elec", "Électricité");
+        ContractTariff totalTariff;
+        totalTariff.taxes.cta = 1.63; totalTariff.taxes.accise = 0.021;
+        addTiers(totalTariff, 9.50, 3.00, 0.1920, 0.2150, 0.1620);
+        totalElec->addTariffVersion(QDate(2024, 3, 1), totalTariff);
         this->offers.push_back(totalElec);
 
-        // TotalEnergies - Gaz (Offre Essentielle)
-        // Stratégie : Abonnement PAS CHER, mais kWh PLUS CHER.
-        // -> Gagne le comparateur si le client simule une petite consommation (ex: < 2000 kWh).
-        EnergyOffer* totalGaz = new EnergyOffer("TotalEnergies", "Offre Essentielle", "Gaz");
-        totalGaz->addTariffVersion(QDate(2023, 1, 1), 18.00, 0.1180);
-        totalGaz->addTariffVersion(QDate(2024, 1, 1), 18.20, 0.1050);
-        this->offers.push_back(totalGaz);
-
-        // 5. Engie - Électricité (Elec Référence)
-        // Stratégie : Abonnement très faible, kWh très cher (parfait pour les studios)
+        // 3. Engie - Elec Référence (Abo cher, kWh très bas)
         EnergyOffer* engieElec = new EnergyOffer("Engie", "Elec Référence 1 an", "Électricité");
-        engieElec->addTariffVersion(QDate(2024, 1, 1), 12.00, 0.2650);
+        ContractTariff engieTariff;
+        engieTariff.taxes.cta = 1.63; engieTariff.taxes.accise = 0.021;
+        addTiers(engieTariff, 12.50, 3.50, 0.1810, 0.1980, 0.1450);
+        engieElec->addTariffVersion(QDate(2024, 1, 1), engieTariff);
         this->offers.push_back(engieElec);
 
-        // Compte client par défaut
-        Contract* defaultContract = new Contract(edfElec); // On lie le contrat à l'offre
+        // 4. Eni - Web Elec (Gros prix de base,)
+        EnergyOffer* eniElec = new EnergyOffer("Eni", "Web Elec", "Électricité");
+        ContractTariff eniTariff;
+        eniTariff.taxes.cta = 1.63; eniTariff.taxes.accise = 0.021;
+        addTiers(eniTariff, 10.00, 3.20, 0.2100, 0.2300, 0.1800);
+        eniElec->addTariffVersion(QDate(2024, 4, 1), eniTariff);
+        this->offers.push_back(eniElec);
+
+        // ==========================================
+        // OFFRES GAZ
+        // Note: Le gaz ne se mesure pas en kVA, mais on assigne les mêmes prix à tous les "kVA" pour simplifier la structure de données.
+        // ==========================================
+
+        // 1. EDF - Avantage Gaz
+        EnergyOffer* edfGaz = new EnergyOffer("EDF", "Avantage Gaz", "Gaz");
+        ContractTariff edfGazTariff;
+        edfGazTariff.taxes.cta = 2.10; edfGazTariff.taxes.accise = 0.01637;
+        addTiers(edfGazTariff, 20.50, 0.0, 0.0910, 0.0, 0.0); // Pas de HP/HC en gaz
+        edfGaz->addTariffVersion(QDate(2024, 1, 1), edfGazTariff);
+        this->offers.push_back(edfGaz);
+
+        // 2. Engie - Gaz Tranquillité
+        EnergyOffer* engieGaz = new EnergyOffer("Engie", "Gaz Tranquillité 1 an", "Gaz");
+        ContractTariff engieGazTariff;
+        engieGazTariff.taxes.cta = 2.10; engieGazTariff.taxes.accise = 0.01637;
+        addTiers(engieGazTariff, 22.00, 0.0, 0.0860, 0.0, 0.0);
+        engieGaz->addTariffVersion(QDate(2024, 2, 1), engieGazTariff);
+        this->offers.push_back(engieGaz);
+
+        // 3. TotalEnergies - Spéciale Gaz
+        EnergyOffer* totalGaz = new EnergyOffer("TotalEnergies", "Spéciale Gaz", "Gaz");
+        ContractTariff totalGazTariff;
+        totalGazTariff.taxes.cta = 2.10; totalGazTariff.taxes.accise = 0.01637;
+        addTiers(totalGazTariff, 19.50, 0.0, 0.0890, 0.0, 0.0);
+        totalGaz->addTariffVersion(QDate(2024, 3, 1), totalGazTariff);
+        this->offers.push_back(totalGaz);
+
+        // ==========================================
+        // COMPTE CLIENT PAR DÉFAUT
+        // ==========================================
+        Contract* defaultContract = new Contract(edfElec, 9, true); // Client en 9 kVA, Heures Creuses !
         User* defaultUser = new User("jeandupont@gmail.com", "1234", "DUPONT Jean", false, defaultContract);
         this->users.push_back(defaultUser);
 
@@ -72,13 +112,11 @@ void DataManager::loadData() {
     QJsonDocument doc(QJsonDocument::fromJson(data));
     QJsonObject root = doc.object();
 
-    // Charger les offres
     QJsonArray offersArray = root["offers"].toArray();
     for (int i = 0; i < offersArray.size(); ++i) {
         this->offers.push_back(EnergyOffer::fromJson(offersArray[i].toObject()));
     }
 
-    // Charger les utilisateurs
     QJsonArray usersArray = root["users"].toArray();
     for (int i = 0; i < usersArray.size(); ++i) {
         QJsonObject userJson = usersArray[i].toObject();
@@ -86,10 +124,12 @@ void DataManager::loadData() {
 
         if (userJson.contains("contract")) {
             QJsonObject contractJson = userJson["contract"].toObject();
-
-            // On cherche l'offre correspondante
             EnergyOffer* linkedContract = this->getOfferByName(contractJson["providerName"].toString(), contractJson["offerName"].toString());
-            if (linkedContract) contract = new Contract(linkedContract);
+
+            int kva = contractJson.contains("powerKVA") ? contractJson["powerKVA"].toInt() : 6;
+            bool hphc = contractJson.contains("isHPHC") ? contractJson["isHPHC"].toBool() : false;
+
+            if (linkedContract) contract = new Contract(linkedContract, kva, hphc);
         }
 
         this->users.push_back(new User(userJson["id"].toString(), userJson["password"].toString(), userJson["fullName"].toString(), userJson["isAdmin"].toBool(), contract));
@@ -118,7 +158,6 @@ bool DataManager::authenticate(const QString& id, const QString& password) {
             return true;
         }
     }
-
     return false;
 }
 
@@ -126,7 +165,6 @@ EnergyOffer* DataManager::getOfferByName(const QString& provider, const QString&
     for (EnergyOffer* o : offers) {
         if (o->providerName == provider && o->offerName == name) return o;
     }
-
     return nullptr;
 }
 

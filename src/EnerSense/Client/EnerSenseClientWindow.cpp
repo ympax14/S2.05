@@ -16,7 +16,7 @@ EnerSenseClientWindow::EnerSenseClientWindow(QWidget* const &parent, QApplicatio
     estimatePage(new EstimatePage(this->tabWidget)),
     offersComparatorPage(new OffersComparatorPage(this->tabWidget))
 {
-    StylesHelper::loadStyle(this, ":/assets/styles/enersenseclient.qss");
+    StylesHelper::loadStyle(this, ":/assets/styles/enersense.qss");
 
     this->setupWindow();
 

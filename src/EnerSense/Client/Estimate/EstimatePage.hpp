@@ -11,8 +11,8 @@ class EstimatePage : public QWidget
     Q_OBJECT
 
 private:
-    QVBoxLayout *layout;
-    QMdiArea *mdiArea;
+    QVBoxLayout * const layout;
+    QMdiArea * const mdiArea;
 public:
     explicit EstimatePage(QWidget* const &parent = nullptr);
 

@@ -2,6 +2,20 @@
 
 Toutes les modifications sont documentées selon [Semantic Versioning](https://semver.org/).
 
+## [2.0.0-dev] - 2026-03-24
+### Modified
+- Refonte du système de factures et d'offres. Données plus exhaustives.
+### Added
+- Le comparateur d'offre permet de comparer avec précisément les offres.
+- Taxes et charges dans les offres
+- Grilles tarifaires selon la puissance du compteur (électricité)
+
+## [1.1.0-dev] - 2026-03-24
+### Added
+- Comptes administrateurs
+- Offres
+- Comparateur d'offres
+
 ## [1.0.0-dev] - 2026-03-24
 ### Modified
 - Refonte du système de factures

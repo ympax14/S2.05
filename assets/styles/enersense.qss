@@ -1,0 +1,101 @@
+#manageTariffsBtnDelete {
+    color: red;
+}
+
+#offersManagementBtnDelete {
+    color: red;
+    font-weight: bold;
+}
+
+#offersManagementBtnManageTariffs {
+    background-color: #2980b9;
+    color: white;
+    font-weight: bold;
+}
+
+#usersManagementBtnDelete {
+    color: red;
+    font-weight: bold;
+}
+
+#invoiceFormScrollArea {
+    background-color: #f4f6f9;
+}
+
+#invoiceDocument {
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+}
+
+QGroupBox[class="invoiceGroupBox"] {
+    font-weight: bold;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+QGroupBox[class="invoiceGroupBox"] *,
+QGroupBox[class="invoiceGroupBox"] *:focus,
+QGroupBox[class="invoiceGroupBox"] *:hover {
+    background-color: white;
+    color: #555;
+    font-size: 12pt;
+    font-weight: bold;
+}
+
+QGroupBox[class="invoiceGroupBox"]::title {
+    subcontrol-origin: margin;
+    left: 10px;
+    padding: 0 5px;
+    color: #555;
+}
+
+#invoiceFormSeparator {
+    background-color: #e0e0e0;
+    max-height: 1px;
+}
+
+#invoiceFormConsumptionLabel {
+    color: #7f8c8d;
+    font-size: 12pt;
+}
+
+#invoiceFormTotalLabel {
+    color: #27ae60;
+    font-size: 18pt;
+}
+
+QLabel[class="myContractPageLabels"] {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+#offersComparatorPageSimulationGroup {
+    font-weight: bold;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+#offersComparatorPageSimulationGroup::title {
+    subcontrol-origin: margin;
+    left: 10px;
+    padding: 0 5px;
+    color: #555;
+}
+
+QLabel[class="offersComparatorLabels"] {
+    font-size: 11pt;
+}
+
+#invoiceFormTitleLabel {
+    color: #2c3e50;
+    font-size: 20pt;
+    font-weight: bold;
+}
+
+#offersComparatorConsumptionBox {
+    font-size: 12pt;
+    font-weight: bold;
+}
