@@ -58,5 +58,5 @@ RESOURCES += \
     ressources.qrc
 
 DISTFILES += \
-    assets/styles/enersenseclient.qss \
+    assets/styles/enersense.qss \
     style.qss

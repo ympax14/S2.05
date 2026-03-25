@@ -1,9 +1,7 @@
 #include "UsersManagementPage.hpp"
-
 #include "../../../utils/DataManager.hpp"
 #include "AssignOfferDialog.hpp"
 #include "CreateUserDialog.hpp"
-
 #include <QHeaderView>
 #include <QComboBox>
 
@@ -38,7 +36,7 @@ void UsersManagementPage::setupUI() {
     this->usersTable->setSelectionMode(QAbstractItemView::SingleSelection);
     this->usersTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    this->btnDelete->setStyleSheet("color: red; font-weight: bold;");
+    this->btnDelete->setObjectName("usersManagementBtnDelete");
 
     this->btnLayout->addWidget(this->btnCreate);
     this->btnLayout->addWidget(this->btnResetPwd);
@@ -66,23 +64,24 @@ void UsersManagementPage::refreshTable() {
         roleItem->setForeground(user->isAdmin ? QBrush(QColorConstants::Svg::darkgoldenrod) : QBrush(QColorConstants::Svg::royalblue));
         this->usersTable->setItem(i, 2, roleItem);
 
-        QString contractStr = (user->contract != nullptr) ? (QString("%1 - %2 (%3)").arg(user->contract->linkedOffer->providerName).arg(user->contract->linkedOffer->offerName).arg(user->contract->linkedOffer->energyType)) : "Aucun contrat";
+        QString contractStr = "Aucun contrat";
+        if (user->contract != nullptr) {
+            QString opt = user->contract->isHPHC ? "HP/HC" : "Base";
+            contractStr = QString("%1 - %2 (%3 kVA %4)").arg(user->contract->linkedOffer->providerName).arg(user->contract->linkedOffer->offerName).arg(user->contract->powerKVA).arg(opt);
+        }
         this->usersTable->setItem(i, 3, new QTableWidgetItem(contractStr));
     }
 }
 
 void UsersManagementPage::createUser() {
     CreateUserDialog dialog(this);
-
     if (dialog.exec() == QDialog::Accepted) {
         if (dialog.getIdEdit()->text().isEmpty() || dialog.getPwdEdit()->text().isEmpty()) {
             QMessageBox::warning(this, "Erreur", "L'ID et le mot de passe sont obligatoires.");
             return;
         }
-
         User* newUser = new User(dialog.getIdEdit()->text(), dialog.getPwdEdit()->text(), dialog.getNameEdit()->text(), dialog.getAdminCheck()->isChecked(), nullptr);
         DataManager::getInstance().addUser(newUser);
-
         this->refreshTable();
     }
 }
@@ -102,9 +101,7 @@ void UsersManagementPage::deleteUser() {
     if (QMessageBox::question(this, "Confirmation", "Supprimer le compte de " + user->fullName + " ?") == QMessageBox::Yes) {
         delete user;
         users.erase(users.begin() + row);
-
         DataManager::getInstance().saveData();
-
         this->refreshTable();
     }
 }
@@ -143,17 +140,14 @@ void UsersManagementPage::assignOffer() {
         int offerIndex = dialog.getOfferCombo()->currentIndex();
         EnergyOffer* offer = DataManager::getInstance().getOffers()[offerIndex];
 
-        // Remplacer l'ancien contrat s'il existe
         if (user->contract) delete user->contract;
 
-        // Créer le nouveau contrat en se basant sur l'offre
-        user->contract = new Contract(offer);
+        // On crée le contrat avec la puissance et l'option choisies
+        user->contract = new Contract(offer, dialog.getKva(), dialog.isHphc());
 
         DataManager::getInstance().saveData();
-
         this->refreshTable();
-
-        QMessageBox::information(this, "Succès", "Le contrat a été assigné et activé à la date d'aujourd'hui !");
+        QMessageBox::information(this, "Succès", "Le contrat a été assigné !");
     }
 }
 
@@ -166,9 +160,7 @@ void UsersManagementPage::cancelContract() {
         if (QMessageBox::question(this, "Résilier", "Résilier le contrat de " + user->fullName + " ?") == QMessageBox::Yes) {
             delete user->contract;
             user->contract = nullptr;
-
             DataManager::getInstance().saveData();
-
             this->refreshTable();
         }
     }

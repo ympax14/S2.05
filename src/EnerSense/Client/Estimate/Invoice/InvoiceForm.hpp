@@ -29,35 +29,41 @@ private slots:
 private:
     Invoice * const invoice;
 
-    // --- Conteneur global (la zone de défilement) ---
     QVBoxLayout * const mainLayout;
     QScrollArea * const scrollArea;
 
-    // --- Le "Document" (la page de la facture) ---
     QWidget * const scrollAreaWidgetContents;
     QHBoxLayout * const centeringLayout;
 
     QWidget * const documentContainer;
     QVBoxLayout * const documentLayout;
 
-    // --- En-tête (Informations du Client & Date) ---
     QGroupBox * const detailsGroup;
     QFormLayout * const detailsGroupLayout;
-    QLabel * const clientNameLabel;
+    QLabel * const clientNameLabel, * const contractLabel;
     QDateEdit * const billingDateEdit;
 
-    // --- Corps (Relevés Compteur & Tarifs) ---
     QGroupBox * const meterGroup;
     QFormLayout * const meterGroupLayout;
-    QSpinBox * const initialIndexBox;
-    QSpinBox * const currentIndexBox;
+
+    // Index Base
+    QSpinBox * const initialIndexBox, * const currentIndexBox;
+    // Index Heures Pleines
+    QSpinBox * const initialIndexHPBox, * const currentIndexHPBox;
+    // Index Heures Creuses
+    QSpinBox * const initialIndexHCBox, * const currentIndexHCBox;
 
     QGroupBox * const tariffGroup;
     QFormLayout * const tariffGroupLayout;
-    QDoubleSpinBox * const subscriptionPriceBox;
-    QDoubleSpinBox * const kwhPriceBox;
 
-    // --- Pied de page (Total) ---
+    QDoubleSpinBox * const subscriptionPriceBox;
+    // Champs de prix détaillés
+    QDoubleSpinBox * const kwhPriceBox; // Pour le tarif de Base
+    QDoubleSpinBox * const hpKwhPriceBox; // Pour le tarif HP
+    QDoubleSpinBox * const hcKwhPriceBox; // Pour le tarif HC
+
+    QLabel * const taxesInfoLabel;
+
     QHBoxLayout * const footerLayout;
     QLabel * const consumptionLabel;
     QLabel * const totalLabel;

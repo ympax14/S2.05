@@ -19,7 +19,7 @@ private:
     ~DataManager();
 
 public:
-    // Récupérer l'instance qui est unique
+    // Récupérer l'instance (qui est unique puisque Singleton)
     static DataManager& getInstance() {
         static DataManager instance;
         return instance;

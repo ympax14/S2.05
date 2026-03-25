@@ -14,7 +14,7 @@ EnerSenseAdminWindow::EnerSenseAdminWindow(QWidget* const &parent, QApplication*
     usersPage(new UsersManagementPage(this->tabWidget)),
     offersPage(new OffersManagementPage(this->tabWidget))
 {
-    StylesHelper::loadStyle(this, ":/assets/styles/enersenseadmin.qss");
+    StylesHelper::loadStyle(this, ":/assets/styles/enersense.qss");
 
     this->setupWindow();
     this->setupMenuBar();

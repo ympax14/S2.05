@@ -10,6 +10,7 @@
 #include <QSpinBox>
 #include <QLabel>
 #include <QComboBox>
+#include <QCheckBox>
 
 class OffersComparatorPage : public QWidget
 {
@@ -19,16 +20,18 @@ public:
 
 private slots:
     void calculateComparisons();
+    void updateUIState();
 
 private:
     QVBoxLayout * const mainLayout;
 
     QGroupBox * const simulationGroup;
-    QHBoxLayout * const simulationLayout;
-    QLabel * const instructionLabel;
-    QSpinBox * const consumptionBox;
-    QLabel * const unitLabel;
-    QComboBox * const energyFilterCombo;
+    QFormLayout * const simulationLayout;
+
+    QComboBox * const energyFilterCombo, * const kvaFilterCombo;
+    QCheckBox * const hphcFilterCheck;
+
+    QSpinBox * const consumptionBaseBox, * const consumptionHPBox, * const consumptionHCBox;
 
     QTableWidget * const resultsTable;
 
